@@ -67,33 +67,42 @@ class SignUp(webapp2.RequestHandler):
         if not valid_username(username):
             error = "Please enter a valid username."
             error = cgi.escape(error)
-            content = template.render(username=username, error1=error)
+            content = template.render(username=username, error1=error, email=email)
             self.response.write(content)
 
         elif not valid_password(password):
             error = "Please enter a valid password."
             error = cgi.escape(error)
-            content = template.render(error2=error)
+            content = template.render(username=username, error2=error, email=email)
             self.response.write(content)
 
         elif password != verify:
             error = "Your passwords do not match."
             error = cgi.escape(error)
-            content = template.render(error3=error)
+            content = template.render(username=username, error3=error, email=email)
             self.response.write(content)
 
         elif not valid_email(email):
             error = "That is not a valid email."
             error = cgi.escape(error)
-            content = template.render(error4=error)
+            content = template.render(username=username, error4=error, email=email)
             self.response.write(content)
 
         else:
-            self.response.write("Welcome, " + username)
+            self.redirect("/welcome?username=" + username)
+
+class Welcome(webapp2.RequestHandler):
+
+    def get(self):
+        username = self.request.get("username")
+        template = jinja_env.get_template("welcome.html")
+        content = template.render(username=username)
+        self.response.write(content)
 
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/signup', SignUp)
+    ('/signup', SignUp),
+    ('/welcome', Welcome)
 ], debug=True)

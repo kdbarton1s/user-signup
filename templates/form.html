@@ -5,7 +5,7 @@
 
 <label>
   Username:
-  <input type="text" name="username" value required>
+  <input type="text" name="username" value="{{username}}" value required>
   <span class="error">{{ error1 }}<span>
 </label>
 
@@ -29,7 +29,7 @@
 
 <label>
   Email Address (Optional):
-  <input type="text" name="email">
+  <input type="text" name="email" value="{{ email }}">
   <span class="error">{{ error4 }}</span>
 </label>
 
